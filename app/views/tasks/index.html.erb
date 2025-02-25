@@ -1,0 +1,45 @@
+<h1>Tasks</h1>
+<%= link_to 'New Task', new_task_path, class: 'btn btn-primary' %>
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      <%= link_to task.title, task_path(task) %> -
+      <%= task.completed ? '<i class="fas fa-check-square"></i>'.html_safe : '<i class="far fa-square"></i>'.html_safe %>
+      <%= link_to 'Edit', edit_task_path(task), class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Delete', task_path(task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+    </li>
+  <% end %>
+</ul>
+
+# app/views/tasks/show.html.erb
+<h1><%= @task.title %></h1>
+<p><%= @task.details %></p>
+<p>Status: <%= @task.completed ? 'Completed' : 'Incomplete' %></p>
+<%= link_to 'Back', tasks_path, class: 'btn btn-primary' %>
+
+# app/views/tasks/_form.html.erb
+<%= form_with model: @task, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :details %>
+    <%= f.text_area :details, class: "form-control" %>
+  </div>
+  <% if @task.persisted? %>
+    <div class="form-check">
+      <%= f.check_box :completed, class: "form-check-input" %>
+      <%= f.label :completed, class: "form-check-label" %>
+    </div>
+  <% end %>
+  <%= f.submit class: "btn btn-success" %>
+<% end %>
+
+# app/views/tasks/new.html.erb
+<h1>New Task</h1>
+<%= render 'form' %>
+
+# app/views/tasks/edit.html.erb
+<h1>Edit Task</h1>
+<%= render 'form' %>
