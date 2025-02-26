@@ -19,6 +19,7 @@ class TasksController < ApplicationController
       redirect_to tasks_path, notice: 'Task was successfully created.'
     else
       render :new
+
     end
   end
 
